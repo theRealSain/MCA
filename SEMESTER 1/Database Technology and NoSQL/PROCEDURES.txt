@@ -1,0 +1,96 @@
+(18.1)
+MYSQL [mca23]> DELIMITER $$
+MYSQL [mca23]> DROP PROCEDURE IF EXISTS ConvertToWords;
+    -> CREATE PROCEDURE ConvertToWords(IN p_number INT)
+    -> BEGIN
+    -> DECLARE units CHAR(10);
+    ->
+    -> CASE p_number
+    -> WHEN 0 THEN SET units = 'Zero';
+    -> WHEN 1 THEN SET units = 'One';
+    -> WHEN 2 THEN SET units = 'Two';
+    -> WHEN 3 THEN SET units = 'Three';
+    -> WHEN 4 THEN SET units = 'Four';
+    -> WHEN 5 THEN SET units = 'Five';
+    -> WHEN 6 THEN SET units = 'Six';
+    -> WHEN 7 THEN SET units = 'Seven';
+    -> WHEN 8 THEN SET units = 'Eight';
+    -> WHEN 9 THEN SET units = 'Nine';
+    -> ELSE SET units = 'Invalid Input';
+    -> END CASE;
+    ->
+    -> SELECT units AS Word;
+    -> END $$
+Query OK, 0 rows affected (0.211 sec)
+
+Query OK, 0 rows affected (0.223 sec)
+
+MYSQL [mca23]>
+MYSQL [mca23]> DELIMITER ;
+MYSQL [mca23]>
+MYSQL [mca23]> CALL ConvertToWords(7);
++-------+
+| Word  |
++-------+
+| Seven |
++-------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.006 sec)
+
+
+(18.2)
+MYSQL [mca23]> DELIMITER $$
+MYSQL [mca23]> DROP PROCEDURE IF EXISTS ProcessTicket;
+    -> CREATE PROCEDURE ProcessTicket(IN p_ticket_number INT, INOUT p_price DECIMAL(10, 2))
+    -> BEGIN
+    -> DECLARE min_price DECIMAL(10, 2) DEFAULT 20.00;
+    ->
+    -> IF p_price > min_price THEN
+    -> SET p_price = p_price - 5.00;
+    -> SELECT 'Price deduction applied. New price: ' AS DESCRIPTION, p_price AS NewPrice;
+    -> ELSE
+    -> SELECT 'No price deduction applied. Price: ' AS DESCRIPTION, p_price AS CurrentPrice;
+    -> END IF;
+    -> END $$
+Query OK, 0 rows affected, 1 warning (0.000 sec)
+
+Query OK, 0 rows affected (0.100 sec)
+
+MYSQL [mca23]>
+MYSQL [mca23]> DELIMITER ;
+MYSQL [mca23]>
+MYSQL [mca23]>
+MYSQL [mca23]> SET @ticket_number = 123;
+Query OK, 0 rows affected (0.000 sec)
+
+MYSQL [mca23]> SET @ticket_price = 15.00;
+Query OK, 0 rows affected (0.000 sec)
+
+MYSQL [mca23]>
+MYSQL [mca23]> CALL ProcessTicket(@ticket_number, @ticket_price);
++-------------------------------------+--------------+
+| DESCRIPTION                         | CurrentPrice |
++-------------------------------------+--------------+
+| No price deduction applied. Price:  |        15.00 |
++-------------------------------------+--------------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.007 sec)
+
+MYSQL [mca23]> SET @ticket_number = 123;
+Query OK, 0 rows affected (0.000 sec)
+
+MYSQL [mca23]> SET @ticket_price = 25.00;
+Query OK, 0 rows affected (0.000 sec)
+
+MYSQL [mca23]>
+MYSQL [mca23]> CALL ProcessTicket(@ticket_number, @ticket_price);
++--------------------------------------+----------+
+| DESCRIPTION                          | NewPrice |
++--------------------------------------+----------+
+| Price deduction applied. New price:  |    20.00 |
++--------------------------------------+----------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.016 sec)

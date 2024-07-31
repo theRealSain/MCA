@@ -1,0 +1,189 @@
+(11.1)
+MYSQL [MCA23]> CREATE TABLE AUTHOR(
+    -> AUTH_ID INT PRIMARY KEY,
+    -> AUTH_NAME VARCHAR(20) NOT NULL,
+    -> AUTH_EMAIL VARCHAR(20) UNIQUE,
+    -> COUNTRY VARCHAR(20) DEFAULT 'INDIA',
+    -> HOMECITY VARCHAR(20) DEFAULT 'DELHI',
+    -> NO_OF_PUBLICATIONS INT,
+    -> CHECK(NO_OF_PUBLICATIONS >= 5)
+    -> );
+Query OK, 0 rows affected (0.017 sec)
+
+MYSQL [MCA23]> DESC AUTHOR;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| AUTH_ID            | int(11)     | NO   | PRI | NULL    |       |
+| AUTH_NAME          | varchar(20) | NO   |     | NULL    |       |
+| AUTH_EMAIL         | varchar(20) | YES  | UNI | NULL    |       |
+| COUNTRY            | varchar(20) | YES  |     | INDIA   |       |
+| HOMECITY           | varchar(20) | YES  |     | DELHI   |       |
+| NO_OF_PUBLICATIONS | int(11)     | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.003 sec)
+
+
+(11.2)
+MYSQL [MCA23]> CREATE TABLE BOOK(
+    -> BOOK_ID INT PRIMARY KEY AUTO_INCREMENT,
+    -> TITLE VARCHAR(20) NOT NULL,
+    -> AUTH_ID INT,
+    -> FOREIGN KEY(AUTH_ID) REFERENCES AUTHOR(AUTH_ID)
+    -> );
+Query OK, 0 rows affected (0.019 sec)
+
+MYSQL [MCA23]> DESC BOOK;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| BOOK_ID | int(11)     | NO   | PRI | NULL    | auto_increment |
+| TITLE   | varchar(20) | NO   |     | NULL    |                |
+| AUTH_ID | int(11)     | YES  | MUL | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+3 rows in set (0.002 sec)
+
+
+(11.3)
+MYSQL [MCA23]> ALTER TABLE BOOK 
+    -> ADD CONSTRAINT FOREIGN KEY(AUTH_ID)
+    -> REFERENCES AUTHOR(AUTH_ID)
+    -> ON DELETE CASCADE;
+Query OK, 0 rows affected (0.418 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+(11.4)
+MYSQL [MCA23]> CREATE TABLE BUILDING(
+    -> BUILDING_NO INT PRIMARY KEY,
+    -> BUILDING_NAME VARCHAR(20),
+    -> ADDRESS VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.012 sec)
+
+MYSQL [MCA23]> DESC BUILDING;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| BUILDING_NO   | int(11)     | NO   | PRI | NULL    |       |
+| BUILDING_NAME | varchar(20) | YES  |     | NULL    |       |
+| ADDRESS       | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.003 sec)
+
+MYSQL [MCA23]> CREATE TABLE ROOM(
+    -> ROOM_NO INT PRIMARY KEY,
+    -> ROOM_NAME VARCHAR(20),
+    -> BUILDING_NO INT,
+    -> FOREIGN KEY(BUILDING_NO) REFERENCES BUILDING(BUILDING_NO) ON DELETE SET NULL
+    -> );
+Query OK, 0 rows affected (0.015 sec)
+
+MYSQL [MCA23]> DESC ROOM;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| ROOM_NO     | int(11)     | NO   | PRI | NULL    |       |
+| ROOM_NAME   | varchar(20) | YES  |     | NULL    |       |
+| BUILDING_NO | int(11)     | YES  | MUL | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.002 sec)
+
+MYSQL [MCA23]> CREATE TABLE PERSONS(
+    -> P_ID INT,
+    -> FIRST_NAME VARCHAR(20),
+    -> LAST_NAME VARCHAR(20),
+    -> ADDRESS VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.063 sec)
+
+MYSQL [mca23]> DESC PERSONS;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| P_ID       | int(11)     | NO   |     | NULL    |       |
+| FIRST_NAME | varchar(20) | NO   |     | NULL    |       |
+| LAST_NAME  | varchar(20) | YES  |     | NULL    |       |
+| ADDRESS    | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.002 sec)
+
+
+(12.1)
+MYSQL [MCA23]> ALTER TABLE PERSONS
+    -> ADD PRIMARY KEY(P_ID);
+Query OK, 0 rows affected (0.074 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+(12.2)
+MYSQL [MCA23]> ALTER TABLE PERSONS 
+    -> DROP PRIMARY KEY;
+Query OK, 0 rows affected (0.050 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+(12.3)
+MYSQL [MCA23]> ALTER TABLE PERSONS 
+    -> ADD PRIMARY KEY(P_ID,FIRST_NAME);
+Query OK, 0 rows affected (0.031 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+(12.4)
+MYSQL [MCA23]> ALTER TABLE PERSONS 
+    -> ADD CONSTRAINT UC_PERSON UNIQUE(P_ID);
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+(12.5)
+MYSQL [MCA23]> ALTER TABLE PERSONS 
+    -> ADD CONSTRAINT UC_NAME UNIQUE(FIRST_NAME,LAST_NAME);
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+(12.6)
+MYSQL [MCA23]> ALTER TABLE PERSONS 
+    -> DROP INDEX UC_PERSON;
+Query OK, 0 rows affected (0.009 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> ALTER TABLE PERSONS 
+    -> DROP INDEX UC_NAME;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+MYSQL [mca23]> CREATE TABLE ORDERS(
+    -> ORDER_ID INT,
+    -> ORDER_NO INT,
+    -> P_ID INT
+    -> );
+Query OK, 0 rows affected (0.023 sec)
+
+MYSQL [mca23]> DESC ORDERS;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| ORDER_ID | int(11) | YES  |     | NULL    |       |
+| ORDER_NO | int(11) | YES  |     | NULL    |       |
+| P_ID     | int(11) | YES  |     | NULL    |       |
++----------+---------+------+-----+---------+-------+
+3 rows in set (0.002 sec)
+
+
+(12.7)
+MYSQL [mca23]> ALTER TABLE ORDERS 
+    -> ADD CONSTRAINT FK_PERSONORDER
+    -> FOREIGN KEY(P_ID) REFERENCES PERSONS(P_ID);
+Query OK, 0 rows affected (0.048 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+(12.8)
+MYSQL [mca23]> ALTER TABLE ORDERS 
+    -> DROP FOREIGN KEY FK_PERSONORDER;
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0

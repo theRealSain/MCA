@@ -1,0 +1,156 @@
+MYSQL [MCA23]> CREATE TABLE SALESMAN(
+    -> SALESMAN_ID INT,
+    -> NAME VARCHAR(20),
+    -> CITY VARCHAR(20),
+    -> COMMISION FLOAT
+    -> );
+Query OK, 0 rows affected (0.054 sec)
+
+MYSQL [MCA23]> DESC SALESMAN;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| SALESMAN_ID | int(11)     | YES  |     | NULL    |       |
+| NAME        | varchar(20) | YES  |     | NULL    |       |
+| CITY        | varchar(20) | YES  |     | NULL    |       |
+| COMMISION   | float       | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.002 sec)
+
+MYSQL [MCA23]> INSERT INTO SALESMAN VALUES
+    -> (5001, 'JAMES HOOG', 'NEW YORK', 0.15),
+    -> (5002, 'NAIL KNITE', 'PARIS', 0.13),
+    -> (5005, 'PIT ALEX', 'LONDON', 0.11),
+    -> (5006, 'MC LYON', 'PARIS', 0.14),
+    -> (5003, 'LAUSON HEN', 'SAN JOSE', 0.12),
+    -> (5007, 'PAUL ADAM', 'ROME', 0.13);
+Query OK, 6 rows affected (0.008 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM SALESMAN;
++-------------+------------+----------+-----------+
+| SALESMAN_ID | NAME       | CITY     | COMMISION |
++-------------+------------+----------+-----------+
+|        5001 | JAMES HOOG | NEW YORK |      0.15 |
+|        5002 | NAIL KNITE | PARIS    |      0.13 |
+|        5005 | PIT ALEX   | LONDON   |      0.11 |
+|        5006 | MC LYON    | PARIS    |      0.14 |
+|        5003 | LAUSON HEN | SAN JOSE |      0.12 |
+|        5007 | PAUL ADAM  | ROME     |      0.13 |
++-------------+------------+----------+-----------+
+6 rows in set (0.001 sec)
+
+MYSQL [MCA23]> CREATE TABLE SALES_ORDER(
+    -> ORDER_NO INT,
+    -> PURCHASE_AMT FLOAT,
+    -> ORDER_DATE DATE,
+    -> CUSTOMER_ID INT,
+    -> SALESMAN_ID INT
+    -> );
+Query OK, 0 rows affected (0.090 sec)
+
+MYSQL [MCA23]> DESC SALES_ORDER;
++--------------+---------+------+-----+---------+-------+
+| Field        | Type    | Null | Key | Default | Extra |
++--------------+---------+------+-----+---------+-------+
+| ORDER_NO     | int(11) | YES  |     | NULL    |       |
+| PURCHASE_AMT | float   | YES  |     | NULL    |       |
+| ORDER_DATE   | date    | YES  |     | NULL    |       |
+| CUSTOMER_ID  | int(11) | YES  |     | NULL    |       |
+| SALESMAN_ID  | int(11) | YES  |     | NULL    |       |
++--------------+---------+------+-----+---------+-------+
+5 rows in set (0.002 sec)
+
+MYSQL [MCA23]> INSERT INTO SALES_ORDER VALUES
+    -> (70001, 150.5, '2012-10-05', 3005, 5002),
+    -> (70009, 270.65, '2012-09-10', 3001, 5005),
+    -> (70002, 65.26, '2012-10-05', 3002, 5001),
+    -> (70004, 110.5, '2012-08-17', 3009, 5003),
+    -> (70007, 948.5, '2012-09-10', 3005, 5002),
+    -> (70005, 2400.6, '2012-07-27', 3007, 5001),
+    -> (70008, 5760, '2012-09-10', 3002, 5001),
+    -> (70010, 1983.43, '2012-10-10', 3004, 5006),
+    -> (70003, 2480.4, '2012-10-10', 3009, 5003),
+    -> (70012, 250.45, '2012-06-27', 3008, 5002),
+    -> (70011, 75.29, '2012-08-17', 3003, 5007),
+    -> (70013, 3045.6, '2012-04-25', 3002, 5001);
+Query OK, 12 rows affected (0.003 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM SALES_ORDER;
++----------+--------------+------------+-------------+-------------+
+| ORDER_NO | PURCHASE_AMT | ORDER_DATE | CUSTOMER_ID | SALESMAN_ID |
++----------+--------------+------------+-------------+-------------+
+|    70001 |        150.5 | 2012-10-05 |        3005 |        5002 |
+|    70009 |       270.65 | 2012-09-10 |        3001 |        5005 |
+|    70002 |        65.26 | 2012-10-05 |        3002 |        5001 |
+|    70004 |        110.5 | 2012-08-17 |        3009 |        5003 |
+|    70007 |        948.5 | 2012-09-10 |        3005 |        5002 |
+|    70005 |       2400.6 | 2012-07-27 |        3007 |        5001 |
+|    70008 |         5760 | 2012-09-10 |        3002 |        5001 |
+|    70010 |      1983.43 | 2012-10-10 |        3004 |        5006 |
+|    70003 |       2480.4 | 2012-10-10 |        3009 |        5003 |
+|    70012 |       250.45 | 2012-06-27 |        3008 |        5002 |
+|    70011 |        75.29 | 2012-08-17 |        3003 |        5007 |
+|    70013 |       3045.6 | 2012-04-25 |        3002 |        5001 |
++----------+--------------+------------+-------------+-------------+
+12 rows in set (0.001 sec)
+
+
+(15.1)
+MYSQL [MCA23]> SELECT * FROM SALES_ORDER WHERE SALESMAN_ID = (SELECT SALESMAN_ID FROM SALESMAN WHERE NAME = 'PAUL ADAM');
++----------+--------------+------------+-------------+-------------+
+| ORDER_NO | PURCHASE_AMT | ORDER_DATE | CUSTOMER_ID | SALESMAN_ID |
++----------+--------------+------------+-------------+-------------+
+|    70011 |        75.29 | 2012-08-17 |        3003 |        5007 |
++----------+--------------+------------+-------------+-------------+
+1 row in set (0.002 sec)
+
+
+(15.2)
+MYSQL [MCA23]> SELECT * FROM SALES_ORDER WHERE SALESMAN_ID = (SELECT SALESMAN_ID FROM SALES_ORDER WHERE CUSTOMER_ID = 3007);
++----------+--------------+------------+-------------+-------------+
+| ORDER_NO | PURCHASE_AMT | ORDER_DATE | CUSTOMER_ID | SALESMAN_ID |
++----------+--------------+------------+-------------+-------------+
+|    70002 |        65.26 | 2012-10-05 |        3002 |        5001 |
+|    70005 |       2400.6 | 2012-07-27 |        3007 |        5001 |
+|    70008 |         5760 | 2012-09-10 |        3002 |        5001 |
+|    70013 |       3045.6 | 2012-04-25 |        3002 |        5001 |
++----------+--------------+------------+-------------+-------------+
+4 rows in set (0.000 sec)
+
+
+(15.3)
+MYSQL [MCA23]> SELECT * FROM SALES_ORDER WHERE PURCHASE_AMT > (SELECT AVG(PURCHASE_AMT) FROM SALES_ORDER WHERE ORDER_DATE = '2012-10-10');
++----------+--------------+------------+-------------+-------------+
+| ORDER_NO | PURCHASE_AMT | ORDER_DATE | CUSTOMER_ID | SALESMAN_ID |
++----------+--------------+------------+-------------+-------------+
+|    70005 |       2400.6 | 2012-07-27 |        3007 |        5001 |
+|    70008 |         5760 | 2012-09-10 |        3002 |        5001 |
+|    70003 |       2480.4 | 2012-10-10 |        3009 |        5003 |
+|    70013 |       3045.6 | 2012-04-25 |        3002 |        5001 |
++----------+--------------+------------+-------------+-------------+
+4 rows in set (0.002 sec)
+
+
+(15.4)
+MYSQL [MCA23]> SELECT NAME, COMMISION, CITY FROM SALESMAN WHERE SALESMAN_ID IN (SELECT SALESMAN_ID FROM SALESMAN WHERE CITY = 'PARIS');
++------------+-----------+-------+
+| NAME       | COMMISION | CITY  |
++------------+-----------+-------+
+| NAIL KNITE |      0.13 | PARIS |
+| MC LYON    |      0.14 | PARIS |
++------------+-----------+-------+
+2 rows in set (0.003 sec)
+
+
+(15.5)
+MYSQL [MCA23]> SELECT * FROM SALES_ORDER WHERE CUSTOMER_ID = ((SELECT SALESMAN_ID FROM SALESMAN WHERE NAME = 'MC LYON')-2001);
++----------+--------------+------------+-------------+-------------+
+| ORDER_NO | PURCHASE_AMT | ORDER_DATE | CUSTOMER_ID | SALESMAN_ID |
++----------+--------------+------------+-------------+-------------+
+|    70001 |        150.5 | 2012-10-05 |        3005 |        5002 |
+|    70007 |        948.5 | 2012-09-10 |        3005 |        5002 |
++----------+--------------+------------+-------------+-------------+
+2 rows in set (0.001 sec)
+

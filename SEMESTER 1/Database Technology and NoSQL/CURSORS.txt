@@ -1,0 +1,208 @@
+(21.1)
+MYSQL [MCA23]> CREATE TABLE STUDENTS(
+    -> ID INT PRIMARY KEY,
+    -> NAME VARCHAR(20),
+    -> MARK1 FLOAT,
+    -> MARK2 FLOAT,
+    -> MARK3 FLOAT,
+    -> TOTAL FLOAT,
+    -> AVG FLOAT,
+    -> GRADE CHAR(1)
+    -> );
+Query OK, 0 rows affected (0.227 sec)
+
+MYSQL [MCA23]> DESC STUDENTS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| ID    | int(11)     | NO   | PRI | NULL    |       |
+| NAME  | varchar(20) | YES  |     | NULL    |       |
+| MARK1 | float       | YES  |     | NULL    |       |
+| MARK2 | float       | YES  |     | NULL    |       |
+| MARK3 | float       | YES  |     | NULL    |       |
+| TOTAL | float       | YES  |     | NULL    |       |
+| AVG   | float       | YES  |     | NULL    |       |
+| GRADE | char(1)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+8 rows in set (0.002 sec)
+
+MYSQL [MCA23]> INSERT INTO STUDENTS (ID, NAME, MARK1, MARK2, MARK3) VALUES
+    -> (1, 'John Doe', 85, 90, 78),
+    -> (2, 'Jane Smith', 92, 88, 95),
+    -> (3, 'Bob Johnson', 78, 80, 82);
+Query OK, 3 rows affected (0.355 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM STUDENTS;
++------+-------------+-------+-------+-------+-------+------+-------+
+| ID   | NAME        | MARK1 | MARK2 | MARK3 | TOTAL | AVG  | GRADE |
++------+-------------+-------+-------+-------+-------+------+-------+
+|    1 | John Doe    |    85 |    90 |    78 |  NULL | NULL | NULL  |
+|    2 | Jane Smith  |    92 |    88 |    95 |  NULL | NULL | NULL  |
+|    3 | Bob Johnson |    78 |    80 |    82 |  NULL | NULL | NULL  |
++------+-------------+-------+-------+-------+-------+------+-------+
+3 rows in set (0.031 sec)
+
+
+(21.1)
+MYSQL [mca23]> DELIMITER $$
+MYSQL [mca23]>
+MYSQL [mca23]> DROP PROCEDURE IF EXISTS TotalAverage;
+MYSQL [mca23]>
+MYSQL [mca23]> CREATE PROCEDURE TotalAverage()
+    -> BEGIN
+    ->     DECLARE v_ID INT;
+    ->     DECLARE v_NAME VARCHAR(20);
+    ->     DECLARE v_MARK1 FLOAT;
+    ->     DECLARE v_MARK2 FLOAT;
+    ->     DECLARE v_MARK3 FLOAT;
+    ->     DECLARE v_TOTAL FLOAT;
+    ->     DECLARE v_AVG FLOAT;
+    ->     DECLARE v_GRADE CHAR(1);
+    ->     DECLARE v_FINISHED INT DEFAULT 0;
+    ->
+    ->     DECLARE student_cursor CURSOR FOR SELECT * FROM STUDENTS;
+    ->
+    ->     DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_FINISHED = 1;
+    ->
+    ->     OPEN student_cursor;
+    ->
+    ->     eloop: LOOP
+    ->         FETCH student_cursor INTO v_ID, v_NAME, v_MARK1, v_MARK2, v_MARK3, v_TOTAL, v_AVG, v_GRADE;
+    ->
+    ->         SET v_TOTAL = v_MARK1 + v_MARK2 + v_MARK3;
+    ->         SET v_AVG = v_TOTAL / 3;
+    ->
+    ->         IF v_AVG > 90 THEN SET v_GRADE = 'A';
+    ->         ELSEIF v_AVG >= 60 THEN SET v_GRADE = 'B';
+    ->         ELSEIF v_AVG >= 30 THEN SET v_GRADE = 'C';
+    ->         ELSEIF v_AVG >= 10 THEN SET v_GRADE = 'D';
+    ->         ELSE SET v_GRADE = 'E';
+    ->         END IF;
+    ->
+    ->         UPDATE STUDENTS SET TOTAL = v_TOTAL, AVG = v_AVG, GRADE = v_GRADE WHERE ID = v_ID;
+    ->
+    ->         IF v_FINISHED = 1 THEN LEAVE eloop;
+    ->         END IF;
+    ->     END LOOP eloop;
+    ->
+    ->     CLOSE student_cursor;
+    -> END $$
+Query OK, 0 rows affected (0.017 sec)
+Query OK, 0 rows affected (0.014 sec)
+
+MYSQL [mca23]>
+MYSQL [mca23]> DELIMITER ;
+MYSQL [mca23]>
+MYSQL [mca23]> CALL TotalAverage();
+Query OK, 3 rows affected (0.017 sec)
+
+MYSQL [mca23]> SELECT * FROM STUDENTS;
++----+-------------+-------+-------+-------+-------+---------+-------+
+| ID | NAME        | MARK1 | MARK2 | MARK3 | TOTAL | AVG     | GRADE |
++----+-------------+-------+-------+-------+-------+---------+-------+
+|  1 | John Doe    |    85 |    90 |    78 |   253 | 84.3333 | B     |
+|  2 | Jane Smith  |    92 |    88 |    95 |   275 | 91.6667 | A     |
+|  3 | Bob Johnson |    78 |    80 |    82 |   240 |      80 | B     |
++----+-------------+-------+-------+-------+-------+---------+-------+
+3 rows in set (0.000 sec)
+
+
+(21.2)
+MYSQL [mca23]> CREATE TABLE PASS(
+    -> ID INT,
+    -> NAME VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.024 sec)
+
+MYSQL [mca23]> CREATE TABLE FAIL(
+    -> ID INT,
+    -> NAME VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.023 sec)
+
+MYSQL [mca23]> DESC PASS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| ID    | int(11)     | YES  |     | NULL    |       |
+| NAME  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.002 sec)
+
+MYSQL [mca23]> DESC FAIL;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| ID    | int(11)     | YES  |     | NULL    |       |
+| NAME  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.002 sec)
+
+
+MYSQL [mca23]> DELIMITER $$
+MYSQL [mca23]> DROP PROCEDURE IF EXISTS StdTables $$
+
+MYSQL [mca23]>
+MYSQL [mca23]> CREATE PROCEDURE StdTables()
+    -> BEGIN
+    ->
+    -> DECLARE v_ID INT;
+    -> DECLARE v_NAME VARCHAR(20);
+    -> DECLARE v_TOTAL FLOAT;
+    -> DECLARE v_FINISHED INT DEFAULT 0;
+    ->
+    -> DECLARE student_cursor1 CURSOR FOR SELECT ID, NAME, TOTAL FROM STUDENTS;
+    ->
+    -> DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_FINISHED = 1;
+    -> OPEN student_cursor1;
+    ->
+    -> eloop: loop
+    ->
+    -> FETCH student_cursor1 INTO v_ID, v_NAME, v_TOTAL;
+    -> IF v_FINISHED = 1 THEN LEAVE eloop;
+    -> END IF;
+    ->
+    -> IF v_TOTAL >= 100 THEN INSERT INTO PASS VALUES (v_ID, v_NAME);
+    -> ELSE INSERT INTO FAIL VALUES (v_ID, v_NAME);
+    -> END IF;
+    -> END LOOP eloop;
+    -> CLOSE student_cursor1;
+    -> END $$
+Query OK, 0 rows affected (0.082 sec)
+Query OK, 0 rows affected (0.013 sec)
+
+MYSQL [mca23]> DELIMITER ;
+MYSQL [mca23]>
+MYSQL [mca23]> CALL StdTables;
+Query OK, 3 rows affected (0.105 sec)
+
+MYSQL [mca23]> SELECT * FROM PASS;
++------+-------------+
+| ID   | NAME        |
++------+-------------+
+|    1 | John Doe    |
+|    2 | Jane Smith  |
+|    3 | Bob Johnson |
++------+-------------+
+3 rows in set (0.000 sec)
+
+MYSQL [mca23]> SELECT * FROM FAIL;
++------+------+
+| ID   | NAME |
++------+------+
+| NULL | NULL |
+| NULL | NULL |
+| NULL | NULL |
++------+------+
+3 rows in set (0.000 sec)
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,163 @@
+(19.1)
+MYSQL [MCA23]> DELIMITER $$
+MYSQL [MCA23]>
+MYSQL [MCA23]> DROP FUNCTION IF EXISTS EvaluateResult;
+    ->
+    -> CREATE FUNCTION EvaluateResult(p_mark FLOAT) RETURNS VARCHAR(50)
+    -> BEGIN
+    ->     DECLARE result VARCHAR(50);
+    ->
+    ->     IF p_mark >= 90 THEN
+    ->         SET result = 'Distinction';
+    ->     ELSEIF p_mark >= 75 THEN
+    ->         SET result = 'First Class';
+    ->     ELSEIF p_mark >= 60 THEN
+    ->         SET result = 'Second Class';
+    ->     ELSEIF p_mark >= 50 THEN
+    ->         SET result = 'Pass Class';
+    ->     ELSE
+    ->         SET result = 'Fail';
+    ->     END IF;
+    ->
+    ->     RETURN result;
+    -> END $$
+Query OK, 0 rows affected (0.047 sec)
+Query OK, 0 rows affected (0.061 sec)
+
+MYSQL [MCA23]>
+MYSQL [MCA23]> DELIMITER ;
+MYSQL [MCA23]>
+MYSQL [MCA23]> SELECT EvaluateResult(92) AS Result;
++-------------+
+| Result      |
++-------------+
+| Distinction |
++-------------+
+1 row in set (0.006 sec)
+
+MYSQL [MCA23]> SELECT EvaluateResult(80) AS Result;
++-------------+
+| Result      |
++-------------+
+| First Class |
++-------------+
+1 row in set (0.001 sec)
+
+
+(19.2)
+MYSQL [MCA23]> DELIMITER $$
+MYSQL [MCA23]>
+MYSQL [MCA23]> DROP FUNCTION IF EXISTS CheckOddEven;
+    ->
+    -> CREATE FUNCTION CheckOddEven(p_number INT) RETURNS VARCHAR(10)
+    -> BEGIN
+    ->     DECLARE result VARCHAR(10);
+    ->
+    ->     IF p_number % 2 = 0 THEN
+    ->         SET result = 'Even';
+    ->     ELSE
+    ->         SET result = 'Odd';
+    ->     END IF;
+    ->
+    ->     RETURN result;
+    -> END $$
+Query OK, 0 rows affected, 1 warning (0.000 sec)
+Query OK, 0 rows affected (0.014 sec)
+
+MYSQL [MCA23]>
+MYSQL [MCA23]> DROP PROCEDURE IF EXISTS ProcessNumber;
+    ->
+    -> CREATE PROCEDURE ProcessNumber(IN p_number INT)
+    -> BEGIN
+    ->     DECLARE result VARCHAR(10);
+    ->
+    ->     SET result = CheckOddEven(p_number);
+    ->
+    ->     SELECT CONCAT('Number ', p_number, ' is ', result) AS Result;
+    -> END $$
+Query OK, 0 rows affected, 1 warning (0.000 sec)
+Query OK, 0 rows affected (0.014 sec)
+
+MYSQL [MCA23]>
+MYSQL [MCA23]> DELIMITER ;
+MYSQL [MCA23]>
+MYSQL [MCA23]> CALL ProcessNumber(7);
++-----------------+
+| Result          |
++-----------------+
+| Number 7 is Odd |
++-----------------+
+1 row in set (0.002 sec)
+
+Query OK, 0 rows affected (0.005 sec)
+
+MYSQL [MCA23]> CALL ProcessNumber(10);
++-------------------+
+| Result            |
++-------------------+
+| Number 10 is Even |
++-------------------+
+1 row in set (0.000 sec)
+
+Query OK, 0 rows affected (0.007 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(19.3)
+MYSQL [MCA23]> CREATE TABLE EMPLOYEE (
+    ->     ID INT PRIMARY KEY,
+    ->     NAME VARCHAR(50),
+    ->     DATEOFJOIN DATE,
+    ->     SALARY FLOAT
+    -> );
+Query OK, 0 rows affected (0.048 sec)
+
+MYSQL [MCA23]> INSERT INTO EMPLOYEE(ID, NAME, DATEOFJOIN, SALARY) VALUES
+    -> (1, 'John Doe', '2020-01-15', 50000.00),
+    -> (2, 'Jane Smith', '2018-05-20', 60000.00),
+    -> (3, 'Bob Johnson', '2019-08-10', 55000.00);
+Query OK, 3 rows affected (0.008 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS CalculateYearsInCompany;
+
+CREATE FUNCTION CalculateYearsInCompany(employee_id INT) RETURNS INT
+BEGIN
+  DECLARE v_JOIN DATE;
+  DECLARE v_CUR DATE;
+  DECLARE v_YEAR INT;
+
+  SELECT DATEOFJOIN INTO v_JOIN FROM EMPLOYEE WHERE ID = employee_id;
+  SET v_CUR = CURDATE();
+
+  SET v_YEAR = DATEDIFF(v_CUR, v_JOIN) - 1;
+
+  RETURN v_YEAR;
+
+END $$
+
+DELIMITER ;
+
+MYSQL [MCA23]> SELECT CalculateYearsInCompany(1) AS Days_In_Company_For_Employee_1;
++--------------------------------+
+| Days_In_Company_For_Employee_1 |
++--------------------------------+
+|                           1431 |
++--------------------------------+
+1 row in set (0.000 sec)
+

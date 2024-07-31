@@ -1,0 +1,141 @@
+MYSQL [MCA23]> CREATE TABLE SUPPLIERS(
+    -> SUPPLIER_ID INT,
+    -> SUPPLIER_NAME VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.056 sec)
+
+MYSQL [MCA23]> DESC SUPPLIERS;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| SUPPLIER_ID   | int(11)     | YES  |     | NULL    |       |
+| SUPPLIER_NAME | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+2 rows in set (0.003 sec)
+
+MYSQL [MCA23]> CREATE TABLE S_ORDERS(
+    -> ORDER_ID INT,
+    -> SUPPLIER_ID INT,
+    -> ORDER_DATE DATE
+    -> );
+Query OK, 0 rows affected (0.041 sec)
+
+MYSQL [MCA23]> DESC S_ORDERS;
++-------------+---------+------+-----+---------+-------+
+| Field       | Type    | Null | Key | Default | Extra |
++-------------+---------+------+-----+---------+-------+
+| ORDER_ID    | int(11) | YES  |     | NULL    |       |
+| SUPPLIER_ID | int(11) | YES  |     | NULL    |       |
+| ORDER_DATE  | date    | YES  |     | NULL    |       |
++-------------+---------+------+-----+---------+-------+
+3 rows in set (0.002 sec)
+
+MYSQL [MCA23]> INSERT INTO SUPPLIERS VALUES
+    -> (10000, 'IBM'),
+    -> (10001, 'HEWLETT PACKARD'),
+    -> (10002, 'MICROSOFT'),
+    -> (10003, 'NVIDIA')
+    -> ;
+Query OK, 4 rows affected (0.040 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM SUPPLIERS;
++-------------+-----------------+
+| SUPPLIER_ID | SUPPLIER_NAME   |
++-------------+-----------------+
+|       10000 | IBM             |
+|       10001 | HEWLETT PACKARD |
+|       10002 | MICROSOFT       |
+|       10003 | NVIDIA          |
++-------------+-----------------+
+4 rows in set (0.001 sec)
+
+MYSQL [MCA23]> INSERT INTO S_ORDERS VALUES
+    -> (500125, 10000, '2013-05-12'),
+    -> (500126, 10001, '2013-05-13'),
+    -> (500127, 10004, '2013-05-14')
+    -> ;
+Query OK, 2 rows affected (0.004 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM S_ORDERS;
++----------+-------------+------------+
+| ORDER_ID | SUPPLIER_ID | ORDER_DATE |
++----------+-------------+------------+
+|   500125 |       10000 | 2013-05-12 |
+|   500126 |       10001 | 2013-05-13 |
+|   500127 |       10004 | 2013-05-14 |
++----------+-------------+------------+
+3 rows in set (0.000 sec)
+
+
+(13.1)
+MYSQL [MCA23]> SELECT
+    -> SUPPLIERS.SUPPLIER_ID, SUPPLIERS.SUPPLIER_NAME,
+    -> S_ORDERS.ORDER_ID, S_ORDERS.ORDER_DATE
+    -> FROM SUPPLIERS INNER JOIN S_ORDERS
+    -> ON SUPPLIERS.SUPPLIER_ID = S_ORDERS.SUPPLIER_ID;
++-------------+-----------------+----------+------------+
+| SUPPLIER_ID | SUPPLIER_NAME   | ORDER_ID | ORDER_DATE |
++-------------+-----------------+----------+------------+
+|       10000 | IBM             |   500125 | 2013-05-12 |
+|       10001 | HEWLETT PACKARD |   500126 | 2013-05-13 |
++-------------+-----------------+----------+------------+
+2 rows in set (0.000 sec)
+
+
+(13.2)
+MYSQL [MCA23]> SELECT
+    -> SUPPLIERS.SUPPLIER_ID, SUPPLIERS.SUPPLIER_NAME,
+    -> S_ORDERS.ORDER_ID, S_ORDERS.ORDER_DATE
+    -> FROM SUPPLIERS LEFT OUTER JOIN S_ORDERS
+    -> ON
+    -> SUPPLIERS.SUPPLIER_ID = S_ORDERS.SUPPLIER_ID;
++-------------+-----------------+----------+------------+
+| SUPPLIER_ID | SUPPLIER_NAME   | ORDER_ID | ORDER_DATE |
++-------------+-----------------+----------+------------+
+|       10000 | IBM             |   500125 | 2013-05-12 |
+|       10001 | HEWLETT PACKARD |   500126 | 2013-05-13 |
+|       10002 | MICROSOFT       |     NULL | NULL       |
+|       10003 | NVIDIA          |     NULL | NULL       |
++-------------+-----------------+----------+------------+
+4 rows in set (0.000 sec)
+
+
+(13.3)
+MYSQL [MCA23]> SELECT
+    -> S_ORDERS.ORDER_ID, S_ORDERS.ORDER_DATE,
+    -> SUPPLIERS.SUPPLIER_ID, SUPPLIERS.SUPPLIER_NAME
+    -> FROM S_ORDERS RIGHT OUTER JOIN SUPPLIERS
+    -> ON
+    -> S_ORDERS.SUPPLIER_ID = SUPPLIERS.SUPPLIER_ID;
++----------+------------+-------------+-----------------+
+| ORDER_ID | ORDER_DATE | SUPPLIER_ID | SUPPLIER_NAME   |
++----------+------------+-------------+-----------------+
+|   500125 | 2013-05-12 |       10000 | IBM             |
+|   500126 | 2013-05-13 |       10001 | HEWLETT PACKARD |
+|     NULL | NULL       |       10002 | MICROSOFT       |
+|     NULL | NULL       |       10003 | NVIDIA          |
++----------+------------+-------------+-----------------+
+4 rows in set (0.000 sec)
+
+
+(13.4)
+MYSQL [MCA23]> SELECT SUPPLIERS.*, S_ORDERS.* FROM SUPPLIERS CROSS JOIN S_ORDERS;
++-------------+-----------------+----------+-------------+------------+
+| SUPPLIER_ID | SUPPLIER_NAME   | ORDER_ID | SUPPLIER_ID | ORDER_DATE |
++-------------+-----------------+----------+-------------+------------+
+|       10000 | IBM             |   500125 |       10000 | 2013-05-12 |
+|       10000 | IBM             |   500126 |       10001 | 2013-05-13 |
+|       10000 | IBM             |   500127 |       10004 | 2013-05-14 |
+|       10001 | HEWLETT PACKARD |   500125 |       10000 | 2013-05-12 |
+|       10001 | HEWLETT PACKARD |   500126 |       10001 | 2013-05-13 |
+|       10001 | HEWLETT PACKARD |   500127 |       10004 | 2013-05-14 |
+|       10002 | MICROSOFT       |   500125 |       10000 | 2013-05-12 |
+|       10002 | MICROSOFT       |   500126 |       10001 | 2013-05-13 |
+|       10002 | MICROSOFT       |   500127 |       10004 | 2013-05-14 |
+|       10003 | NVIDIA          |   500125 |       10000 | 2013-05-12 |
+|       10003 | NVIDIA          |   500126 |       10001 | 2013-05-13 |
+|       10003 | NVIDIA          |   500127 |       10004 | 2013-05-14 |
++-------------+-----------------+----------+-------------+------------+
+12 rows in set (0.000 sec)

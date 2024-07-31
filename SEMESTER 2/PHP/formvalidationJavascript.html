@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>Form Validation JavaScript</title>
+</head>
+<body>
+    <h1>Form Validation JavaScript</h1>
+    <form id="myForm" onsubmit="return validateForm()">
+        <label for="id">ID: </label>
+        <input type="text" id="id" name="id"><br><br>
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <div id="errorMessages"></div>
+    <div id="success"></div>
+    <script>
+        function validateForm() 
+        {
+            var id = document.getElementById("id").value;
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var errorMessages = "";
+            if (name === "")
+            {
+                errorMessages += "Name is required!<br>";
+            }
+            if (id === "")
+            {
+                errorMessages += "ID is required!<br>";
+            }
+            if(isNaN(id))
+            {
+                errorMessages += "ID must be a number!<br>";    
+            }
+            if (email === "")
+            {
+                errorMessages += "Email is required!<br>";
+            } 
+            else
+            {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) 
+                {
+                    errorMessages += "Invalid email format!<br>";
+                }
+            }
+            if (errorMessages !== "")
+            {
+                document.getElementById("errorMessages").innerHTML = errorMessages;
+                return false;
+            } 
+            document.getElementById("success").innerHTML = "Form submitted succesfully!";
+            return true;
+        }
+    </script>
+</body>
+</html>

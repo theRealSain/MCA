@@ -1,0 +1,188 @@
+(9.1)
+MYSQL [MCA23]> SELECT COUNT(SPECIES) FROM PET_INFO WHERE SPECIES = 'Dog';
++----------------+
+| COUNT(SPECIES) |
++----------------+
+|              3 |
++----------------+
+1 row in set (0.001 sec)
+
+
+(9.2)
+MYSQL [MCA23]> SELECT MIN(TICKET_PRICE), MAX(TICKET_PRICE) FROM TICKET;
++-------------------+-------------------+
+| MIN(TICKET_PRICE) | MAX(TICKET_PRICE) |
++-------------------+-------------------+
+|                11 |                42 |
++-------------------+-------------------+
+1 row in set (0.003 sec)
+
+
+(9.3)
+MYSQL [MCA23]> SELECT AVG(TICKET_PRICE), SUM(TICKET_PRICE) FROM TICKET;
++-------------------+-------------------+
+| AVG(TICKET_PRICE) | SUM(TICKET_PRICE) |
++-------------------+-------------------+
+|           25.1667 |               151 |
++-------------------+-------------------+
+1 row in set (0.002 sec)
+
+
+(9.4)
+MYSQL [MCA23]> SELECT CONCAT("HELLO", " WORLD!") AS CONCATENATION;
++---------------+
+| CONCATENATION |
++---------------+
+| HELLO WORLD!  |
++---------------+
+1 row in set (0.01 sec)
+
+
+(9.5)
+MYSQL [MCA23]> SELECT LENGTH("HELLO") AS LENGTH;
++---------------+
+| LENGTH        |
++---------------+
+|             5 |
++---------------+
+1 row in set (0.00 sec)
+
+
+(9.6)
+MYSQL [MCA23]> SELECT SUBSTR("TRANSPORTATION", 6, 4) AS SUBSTRING;
++-----------+
+| SUBSTRING |
++-----------+
+| PORT      |
++-----------+
+1 row in set (0.01 sec)
+
+
+(9.7)
+MYSQL [MCA23]> SELECT LOWER("HELLO") AS LOWERCASE;
++-----------+
+| LOWERCASE |
++-----------+
+| hello     |
++-----------+
+1 row in set (0.00 sec)
+
+
+(9.8)
+MYSQL [MCA23]> SELECT UPPER("hello") AS UPPERCASE;
++-----------+
+| UPPERCASE |
++-----------+
+| HELLO     |
++-----------+
+1 row in set (0.00 sec)
+
+
+(9.10)
+MYSQL [MCA23]> SELECT MONTH('2002-08-03') AS MONTH;
++-------+
+| MONTH |
++-------+
+|     8 |
++-------+
+1 row in set (0.00 sec)
+
+
+(9.11)
+MYSQL [MCA23]> SELECT DAYOFMONTH('2002-08-03') AS DAY;
++------+
+| DAY  |
++------+
+|    3 |
++------+
+1 row in set (0.00 sec)
+
+
+(9.12)
+MYSQL [MCA23]> SELECT YEAR('2002-08-03') AS YEAR;
++------+
+| YEAR |
++------+
+| 2002 |
++------+
+1 row in set (0.00 sec)
+
+
+(9.13)
+MYSQL [MCA23]> SELECT DATEDIFF('2023-08-23', '2023-08-03') AS DATE_DIFFERENCE;
++-----------------+
+| DATE_DIFFERENCE |
++-----------------+
+|              20 |
++-----------------+
+1 row in set (0.00 sec)
+
+
+(9.14)
+MYSQL [MCA23]> SELECT DATE_ADD('2023-08-03', INTERVAL 20 DAY) AS DATE_ADD;
++------------+
+| DATE_ADD   |
++------------+
+| 2023-08-23 |
++------------+
+1 row in set (0.00 sec)
+
+
+(9.15)
+MYSQL [MCA23]> SELECT DATE_SUB('2023-08-23', INTERVAL 20 DAY) AS DATE_SUB;
++------------+
+| DATE_SUB   |
++------------+
+| 2023-08-03 |
++------------+
+1 row in set (0.00 sec)
+
+
+(9.16)
+MYSQL [MCA23]> SELECT LAST_DAY('2023-08-03') AS LAST_DAY;
++------------+
+| LAST_DAY   |
++------------+
+| 2023-08-31 |
++------------+
+1 row in set (0.00 sec)
+
+
+(9.17)
+MYSQL [MCA23]> SELECT ABS(-50) AS ABSOLUTE_VALUE;
++----------------+
+| ABSOLUTE_VALUE |
++----------------+
+|             50 |
++----------------+
+1 row in set (0.00 sec)
+
+
+(9.18)
+MYSQL [MCA23]> SELECT ROUND(2.987, 2) AS ROUND;
++-------+
+| ROUND |
++-------+
+|  2.99 |
++-------+
+1 row in set (0.00 sec)
+
+
+(9.19)
+MYSQL [MCA23]> SELECT TRUNCATE(2.987, 2) AS TRUNCATE;
++----------+
+| TRUNCATE |
++----------+
+|     2.98 |
++----------+
+1 row in set (0.00 sec)
+
+
+(9.20)
+MYSQL [MCA23]> SELECT MOD(30, 4) AS MODULUS;
++---------+
+| MODULUS |
++---------+
+|       2 |
++---------+
+1 row in set (0.00 sec)

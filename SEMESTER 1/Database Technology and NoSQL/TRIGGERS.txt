@@ -1,0 +1,109 @@
+MYSQL [MCA23]> CREATE TABLE EMP_LOG(
+    -> ID INT,
+    -> LAST_MODIFIED_TIME DATETIME
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+MYSQL [MCA23]> CREATE TABLE EMP(
+    -> ID INT,
+    -> NAME VARCHAR(20),
+    -> SALARY FLOAT
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+MYSQL [MCA23]> DESC EMP_LOG;
++--------------------+----------+------+-----+---------+-------+
+| Field              | Type     | Null | Key | Default | Extra |
++--------------------+----------+------+-----+---------+-------+
+| ID                 | int(11)  | YES  |     | NULL    |       |
+| LAST_MODIFIED_TIME | datetime | YES  |     | NULL    |       |
++--------------------+----------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+MYSQL [MCA23]> DESC EMP;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| ID     | int(11)     | YES  |     | NULL    |       |
+| NAME   | varchar(20) | YES  |     | NULL    |       |
+| SALARY | float       | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+
+(20.1)
+MYSQL [MCA23]> CREATE TRIGGER SAL_TRIGGER
+    -> BEFORE INSERT ON EMP FOR EACH ROW
+    -> SET NEW.SALARY = NEW.SALARY + 100;
+Query OK, 0 rows affected (0.30 sec)
+
+
+(20.2)
+MYSQL [MCA23]> DELIMITER $$
+MYSQL [MCA23]> CREATE TRIGGER EMP_UPDATE
+    -> BEFORE UPDATE ON EMP FOR EACH ROW
+    -> BEGIN
+    -> IF (OLD.SALARY < 500) THEN
+    -> SET NEW.SALARY = OLD.SALARY + 100;
+    -> ELSEIF (OLD.SALARY < 1000) THEN
+    -> SET NEW.SALARY = OLD.SALARY + 500;
+    -> ELSE
+    -> SET NEW.SALARY = OLD.SALARY + 1000;
+    -> END IF;
+    -> END$$
+Query OK, 0 rows affected (0.02 sec)
+
+
+(20.3)
+MYSQL [MCA23]> CREATE TRIGGER LOG_INSERT
+    -> AFTER INSERT ON EMP FOR EACH ROW
+    -> INSERT INTO EMP_LOG VALUES (NEW.ID, NOW());
+Query OK, 0 rows affected (0.03 sec)
+
+MYSQL [MCA23]> INSERT INTO EMP VALUES(1002, 'SAIN', 1000);
+Query OK, 1 row affected (0.02 sec)
+
+MYSQL [MCA23]> SELECT * FROM EMP_LOG;
++------+---------------------+
+| ID   | LAST_MODIFIED_TIME  |
++------+---------------------+
+| 1002 | 2023-12-08 13:54:56 |
++------+---------------------+
+1 row in set (0.00 sec)
+
+
+(20.4)
+MYSQL [MCA23]> CREATE TRIGGER UPDATE_TRIGGER AFTER UPDATE ON EMP FOR EACH ROW UPDATE EMP_LOG SET LAST_MODIFIED_TIME = NOW() WHERE ID = NEW.ID;
+Query OK, 0 rows affected (0.01 sec)
+
+MYSQL [MCA23]> INSERT INTO EMP VALUES(1003, 'SAIN', 2000);
+Query OK, 1 row affected (0.30 sec)
+
+MYSQL [MCA23]> SELECT * FROM EMP_LOG;
++------+---------------------+
+| ID   | LAST_MODIFIED_TIME  |
++------+---------------------+
+| 1002 | 2023-12-08 13:54:56 |
+| 1005 | 2023-12-08 14:11:44 |
+| 1005 | 2023-12-11 12:45:20 |
+| 1005 | 2023-12-11 12:47:42 |
+| 1003 | 2023-12-11 12:48:35 |
++------+---------------------+
+5 rows in set (0.00 sec)
+
+MYSQL [MCA23]> UPDATE EMP SET NAME = 'SAIN KS' WHERE ID = 1003;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM EMP_LOG;
++------+---------------------+
+| ID   | LAST_MODIFIED_TIME  |
++------+---------------------+
+| 1002 | 2023-12-08 13:54:56 |
+| 1005 | 2023-12-08 14:11:44 |
+| 1005 | 2023-12-11 12:45:20 |
+| 1005 | 2023-12-11 12:47:42 |
+| 1003 | 2023-12-11 12:49:09 |
++------+---------------------+
+5 rows in set (0.01 sec)
+

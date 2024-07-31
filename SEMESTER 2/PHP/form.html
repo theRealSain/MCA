@@ -1,0 +1,64 @@
+<html>  
+	<head>   
+		<title>  
+			Registration Page
+		</title>  
+	</head> 
+	<body> 
+			
+	<form method="POST" action="">  
+
+        <center>
+        <h2> Registration Form </h2>
+        <table border=0 width="60%" cellpadding="5" >
+            <tr>
+                <td><label> Name </label></td>
+                <td><input type="text" name="name"/></td>
+            </tr>
+
+
+            <tr>
+                <td><label>Password :  </label></td>
+                <td><input type="Password" id="pass" name="pass"></td>
+            </tr>
+
+            <tr>
+                <td><label>Retype Password :  </label></td>
+                <td><input type="Password" id="pass" name="con_pass"></td>
+            </tr>
+
+            <tr>
+                <td><label>  City :  </label></td>
+                <td>
+                    <select name="city">  
+                        <option selected hidden>Select City</option>  
+                        <option value="Thrissur">Thrissur</option>
+                        <option value="Ernakulam">Ernakulam</option>
+                        <option value="Trivandrum">Trivandrum</option>
+                    </select>
+                </td>
+            </tr>  
+
+            <tr>
+                <td><label> Gender :</label></td>
+                <td>
+                    <input type="radio" name="gender" value="Male"/> Male
+                    <input type="radio" name="gender" value="Female"/> Female
+                    <input type="radio" name="gender" value="Other"/> Other
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Email :  </label></td>
+                <td><input type="email" id="email" name="email"/></td>
+            </tr>
+
+            <tr>
+                <td><input type="submit" name="sub"/></td>
+            </tr>
+
+        </table>  		
+	</form>  
+	</body>  
+</html>  
+

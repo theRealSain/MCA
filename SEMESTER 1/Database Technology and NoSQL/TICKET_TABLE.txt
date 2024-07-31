@@ -1,0 +1,132 @@
+(7)
+MYSQL [MCA23]> CREATE TABLE TICKET (TICKET_NO INT, TICKET_PRICE INT, TICKET_TYPE VARCHAR(10), PARK_CODE VARCHAR(10));
+Query OK, 0 rows affected (0.021 sec)
+
+MYSQL [MCA23]> DESC TICKET;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| TICKET_NO    | int(11)     | YES  |     | NULL    |       |
+| TICKET_PRICE | int(11)     | YES  |     | NULL    |       |
+| TICKET_TYPE  | varchar(10) | YES  |     | NULL    |       |
+| PARK_CODE    | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.002 sec)
+
+MYSQL [MCA23]> SELECT * FROM TICKET;
++-----------+--------------+-------------+-----------+
+| TICKET_NO | TICKET_PRICE | TICKET_TYPE | PARK_CODE |
++-----------+--------------+-------------+-----------+
+|     13001 |           19 | Child       | FR1001    |
+|     13002 |           35 | Adult       | FR1001    |
+|     13003 |           21 | Senior      | FR1001    |
+|     88567 |           23 | Child       | UK3452    |
+|     88568 |           42 | Adult       | UK3452    |
+|     89720 |           11 | Senior      | UK3452    |
++-----------+--------------+-------------+-----------+
+6 rows in set (0.000 sec)
+
+
+(7.1)
+MYSQL [MCA23]> SELECT TICKET_PRICE AS CURRENT_PRICE, TICKET_PRICE + TICKET_PRICE * (10/100) AS INCREASED_PRICE, TICKET_PRICE + (TICKET_PRICE * (10/100)) - TICKET_PRICE AS DIFFERENCE FROM TICKET;
++---------------+-----------------+------------+
+| CURRENT_PRICE | INCREASED_PRICE | DIFFERENCE |
++---------------+-----------------+------------+
+|            19 |         20.9000 |     1.9000 |
+|            35 |         38.5000 |     3.5000 |
+|            21 |         23.1000 |     2.1000 |
+|            23 |         25.3000 |     2.3000 |
+|            42 |         46.2000 |     4.2000 |
+|            11 |         12.1000 |     1.1000 |
++---------------+-----------------+------------+
+6 rows in set (0.000 sec)
+
+
+(7.2)
+MYSQL [MCA23]> SELECT PARK_CODE, TICKET_PRICE, TICKET_TYPE FROM TICKET WHERE TICKET_PRICE > 20;
++-----------+--------------+-------------+
+| PARK_CODE | TICKET_PRICE | TICKET_TYPE |
++-----------+--------------+-------------+
+| FR1001    |           35 | Adult       |
+| FR1001    |           21 | Senior      |
+| UK3452    |           23 | Child       |
+| UK3452    |           42 | Adult       |
++-----------+--------------+-------------+
+4 rows in set (0.000 sec)
+
+
+(7.3)
+MYSQL [MCA23]> SELECT TICKET_NO, TICKET_PRICE FROM TICKET WHERE TICKET_PRICE < 30;
++-----------+--------------+
+| TICKET_NO | TICKET_PRICE |
++-----------+--------------+
+|     13001 |           19 |
+|     13003 |           21 |
+|     88567 |           23 |
+|     89720 |           11 |
++-----------+--------------+
+4 rows in set (0.000 sec)
+
+
+(7.4)
+MYSQL [MCA23]> SELECT TICKET_NO, TICKET_PRICE FROM TICKET WHERE TICKET_PRICE BETWEEN 30 AND 50;
++-----------+--------------+
+| TICKET_NO | TICKET_PRICE |
++-----------+--------------+
+|     13002 |           35 |
+|     88568 |           42 |
++-----------+--------------+
+2 rows in set (0.001 sec)
+
+
+(7.5)
+MYSQL [MCA23]> SELECT TICKET_NO, TICKET_TYPE FROM TICKET WHERE TICKET_TYPE = 'Senior' OR TICKET_TYPE = 'Child';
++-----------+-------------+
+| TICKET_NO | TICKET_TYPE |
++-----------+-------------+
+|     13001 | Child       |
+|     13003 | Senior      |
+|     88567 | Child       |
+|     89720 | Senior      |
++-----------+-------------+
+4 rows in set (0.001 sec)
+
+
+(8.1)
+MYSQL [MCA23]> SELECT * FROM TICKET WHERE TICKET_PRICE > 20 AND PARK_CODE = 'UK3452';
++-----------+--------------+-------------+-----------+
+| TICKET_NO | TICKET_PRICE | TICKET_TYPE | PARK_CODE |
++-----------+--------------+-------------+-----------+
+|     88567 |           23 | Child       | UK3452    |
+|     88568 |           42 | Adult       | UK3452    |
++-----------+--------------+-------------+-----------+
+2 rows in set (0.010 sec)
+
+
+(8.2)
+MYSQL [MCA23]> SELECT * FROM TICKET WHERE TICKET_TYPE = 'Adult' OR TICKET_TYPE = 'Senior';
++-----------+--------------+-------------+-----------+
+| TICKET_NO | TICKET_PRICE | TICKET_TYPE | PARK_CODE |
++-----------+--------------+-------------+-----------+
+|     13002 |           35 | Adult       | FR1001    |
+|     13003 |           21 | Senior      | FR1001    |
+|     88568 |           42 | Adult       | UK3452    |
+|     89720 |           11 | Senior      | UK3452    |
++-----------+--------------+-------------+-----------+
+4 rows in set (0.000 sec)
+
+
+(8.3)
+MYSQL [MCA23]> SELECT * FROM TICKET WHERE TICKET_no <> 88568;
++-----------+--------------+-------------+-----------+
+| TICKET_NO | TICKET_PRICE | TICKET_TYPE | PARK_CODE |
++-----------+--------------+-------------+-----------+
+|     13001 |           19 | Child       | FR1001    |
+|     13002 |           35 | Adult       | FR1001    |
+|     13003 |           21 | Senior      | FR1001    |
+|     88567 |           23 | Child       | UK3452    |
+|     89720 |           11 | Senior      | UK3452    |
++-----------+--------------+-------------+-----------+
+5 rows in set (0.000 sec
+
+

@@ -1,0 +1,93 @@
+MYSQL [MCA23]> CREATE TABLE COURSE1(
+    -> ID INT,
+    -> NAME VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.015 sec)
+
+MYSQL [MCA23]> DESC COURSE1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| ID    | int(11)     | YES  |     | NULL    |       |
+| NAME  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.003 sec)
+
+MYSQL [MCA23]> INSERT INTO COURSE1 VALUES
+    -> (1, 'JACK'),
+    -> (2, 'HARRY'),
+    -> (3, 'JACKSON');
+Query OK, 3 rows affected (0.003 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> DESC COURSE1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| ID    | int(11)     | YES  |     | NULL    |       |
+| NAME  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.003 sec)
+
+
+
+MYSQL [MCA23]> CREATE TABLE COURSE2(
+    -> ID INT,
+    -> NAME VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.015 sec)
+
+MYSQL [MCA23]> DESC COURSE2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| ID    | int(11)     | YES  |     | NULL    |       |
+| NAME  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.002 sec)
+
+MYSQL [MCA23]> INSERT INTO COURSE2 VALUES
+    -> (3, 'JACKSON'),
+    -> (4, 'STEPHAN'),
+    -> (5, 'DAVID');
+Query OK, 3 rows affected (0.005 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM COURSE2;
++------+---------+
+| ID   | NAME    |
++------+---------+
+|    3 | JACKSON |
+|    4 | STEPHAN |
+|    5 | DAVID   |
++------+---------+
+3 rows in set (0.000 sec)
+
+
+(14.1)
+MYSQL [MCA23]> SELECT * FROM COURSE1 UNION SELECT * FROM COURSE2;
++------+---------+
+| ID   | NAME    |
++------+---------+
+|    1 | JACK    |
+|    2 | HARRY   |
+|    3 | JACKSON |
+|    4 | STEPHAN |
+|    5 | DAVID   |
++------+---------+
+5 rows in set (0.002 sec)
+
+
+(14.2)
+MYSQL [MCA23]> SELECT * FROM COURSE1 UNION ALL SELECT * FROM COURSE2;
++------+---------+
+| ID   | NAME    |
++------+---------+
+|    1 | JACK    |
+|    2 | HARRY   |
+|    3 | JACKSON |
+|    3 | JACKSON |
+|    4 | STEPHAN |
+|    5 | DAVID   |
++------+---------+
+6 rows in set (0.000 sec)

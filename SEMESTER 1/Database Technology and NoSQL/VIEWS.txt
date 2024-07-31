@@ -1,0 +1,106 @@
+MYSQL [MCA23]> CREATE TABLE CUSTOMER(
+    -> CUSTOMER_ID INT,
+    -> CUST_NAME VARCHAR(20),
+    -> CITY VARCHAR(20),
+    -> GRADE INT,
+    -> SALESMAN_ID INT
+    -> );
+Query OK, 0 rows affected (0.116 sec)
+
+MYSQL [MCA23]> DESC CUSTOMER;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| CUSTOMER_ID | int(11)     | YES  |     | NULL    |       |
+| CUST_NAME   | varchar(20) | YES  |     | NULL    |       |
+| CITY        | varchar(20) | YES  |     | NULL    |       |
+| GRADE       | int(11)     | YES  |     | NULL    |       |
+| SALESMAN_ID | int(11)     | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.002 sec)
+
+MYSQL [MCA23]> INSERT INTO CUSTOMER VALUES
+    -> (3002, 'NICK ARMANDO', 'NEW YORK', 100, 5001),
+    -> (3007, 'BRAD DAVIS', 'NEW YORK', 200, 5001),
+    -> (3005, 'GRAHAM ZUSI', 'CALIFORNIA', 200, 5002),
+    -> (3008, 'JULIAN GREEN', 'LONDON', 300, 5002),
+    -> (3004, 'FABIAN JOHNSON', 'PARIS', 300, 5006),
+    -> (3009, 'GEOFF CAMERON', 'BERLIN', 100, 5003),
+    -> (3003, 'JOZY ALTIDOR', 'MOSCOW', 200, 5007),
+    -> (3001, 'BRAD GUZAN', 'LONDON', 100, 5005);
+Query OK, 8 rows affected (0.003 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM CUSTOMER;
++-------------+----------------+------------+-------+-------------+
+| CUSTOMER_ID | CUST_NAME      | CITY       | GRADE | SALESMAN_ID |
++-------------+----------------+------------+-------+-------------+
+|        3002 | NICK ARMANDO   | NEW YORK   |   100 |        5001 |
+|        3007 | BRAD DAVIS     | NEW YORK   |   200 |        5001 |
+|        3005 | GRAHAM ZUSI    | CALIFORNIA |   200 |        5002 |
+|        3008 | JULIAN GREEN   | LONDON     |   300 |        5002 |
+|        3004 | FABIAN JOHNSON | PARIS      |   300 |        5006 |
+|        3009 | GEOFF CAMERON  | BERLIN     |   100 |        5003 |
+|        3003 | JOZY ALTIDOR   | MOSCOW     |   200 |        5007 |
+|        3001 | BRAD GUZAN     | LONDON     |   100 |        5005 |
++-------------+----------------+------------+-------+-------------+
+8 rows in set (0.000 sec)
+
+
+(16.1)
+MYSQL [MCA23]> CREATE VIEW HIGHGRADE AS SELECT * FROM CUSTOMER WHERE GRADE = 300;
+Query OK, 0 rows affected (0.007 sec)
+
+MYSQL [MCA23]> SELECT * FROM HIGHGRADE;
++-------------+----------------+--------+-------+-------------+
+| CUSTOMER_ID | CUST_NAME      | CITY   | GRADE | SALESMAN_ID |
++-------------+----------------+--------+-------+-------------+
+|        3008 | JULIAN GREEN   | LONDON |   300 |        5002 |
+|        3004 | FABIAN JOHNSON | PARIS  |   300 |        5006 |
++-------------+----------------+--------+-------+-------------+
+2 rows in set (0.004 sec)
+
+
+(16.2)
+MYSQL [MCA23]> ALTER VIEW HIGHGRADE AS SELECT * FROM CUSTOMER WHERE GRADE >= 200;
+Query OK, 0 rows affected (0.004 sec)
+
+MYSQL [MCA23]> SELECT * FROM HIGHGRADE;
++-------------+----------------+------------+-------+-------------+
+| CUSTOMER_ID | CUST_NAME      | CITY       | GRADE | SALESMAN_ID |
++-------------+----------------+------------+-------+-------------+
+|        3007 | BRAD DAVIS     | NEW YORK   |   200 |        5001 |
+|        3005 | GRAHAM ZUSI    | CALIFORNIA |   200 |        5002 |
+|        3008 | JULIAN GREEN   | LONDON     |   300 |        5002 |
+|        3004 | FABIAN JOHNSON | PARIS      |   300 |        5006 |
+|        3003 | JOZY ALTIDOR   | MOSCOW     |   200 |        5007 |
++-------------+----------------+------------+-------+-------------+
+5 rows in set (0.001 sec)
+
+
+(16.3)
+MYSQL [MCA23]> UPDATE HIGHGRADE SET CITY = 'LONDON' WHERE SALESMAN_ID = 5006;
+Query OK, 1 row affected (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MYSQL [MCA23]> SELECT * FROM HIGHGRADE;
++-------------+----------------+------------+-------+-------------+
+| CUSTOMER_ID | CUST_NAME      | CITY       | GRADE | SALESMAN_ID |
++-------------+----------------+------------+-------+-------------+
+|        3007 | BRAD DAVIS     | NEW YORK   |   200 |        5001 |
+|        3005 | GRAHAM ZUSI    | CALIFORNIA |   200 |        5002 |
+|        3008 | JULIAN GREEN   | LONDON     |   300 |        5002 |
+|        3004 | FABIAN JOHNSON | LONDON     |   300 |        5006 |
+|        3003 | JOZY ALTIDOR   | MOSCOW     |   200 |        5007 |
++-------------+----------------+------------+-------+-------------+
+5 rows in set (0.000 sec)
+
+
+(16.4)
+MYSQL [MCA23]> DELETE FROM HIGHGRADE;
+Query OK, 5 rows affected (0.00 sec)
+
+
+(16.5)
+MYSQL [MCA23]> DROP VIEW HIGHGRADE;
+Query OK, 0 rows affected (0.00 sec)

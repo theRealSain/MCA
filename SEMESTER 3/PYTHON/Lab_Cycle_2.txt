@@ -1,0 +1,81 @@
+ 27. Create a tuple with some integer value and find the element with the
+highest number of counts in it.
+
+28.  Write a program that prints absolute value, square root of a number
+(using math module).
+
+29. Create a set phonebook1 and phonebook2 and perform set
+operations
+
+30 .AIM: The function make Dictionary takes 2 list as arguments that is a
+name list (string type) and score list (integer type) using which a
+dictionary is created with key as name and value as score and perform the
+following operations
+i. Print the score of Lisa
+ii. Change score of Rahul to 34
+iii. Ken dropped the course so remove his details
+iv. Calculate the average of scores from the dictionary
+v. Print students with their score in alphabetic order '
+
+31.AIM: Create a class Student with student_name, rollno, mark(as list).use
+functions calculate_avg() for calculation of average and display() for
+displaying the all details of students.use init()method.
+
+32 . AIM: Create a classGrandparent with properties gname and gage,function
+GrangparentDetails() inherited to a class Parent with properties pname and
+page,function ParentDetails() inherited to a class Child with properties
+cname nd cage,function ChildDetails().Create an object for Child display
+all details of family members.
+
+33.AIM: Create a class Personal with properties name,rollno,age with
+function displaypersonal() and a class Academic with properties
+attendance and total marks with function displayacademic() and inherit
+these two classes to another class student with property grade and function
+calculateGrade() that calculate and display the grade.Using object of
+student display all details related to student.
+
+34.AIM: Create a class Circle to implement operator overloading of
+addition,multiplication,not equal to and equal to.
+
+35.AIM: Create a program that display an exception for TypeError and
+IndexError using multiple except statement
+
+36.AIM: Create a user defined exception to raise an exception if a mark
+entered by the user is less than zero or greater than 100.
+
+37. AIM: Create a file named test.txt with the content
+Hello Programmer, Welcome to python tutorial
+And perform the following operations
+a) Read file content line by line
+b) Read five characters from the file
+c) Write a new line “ Have a great learning experience”
+
+38.AIM: Create a database student and perform the basic database
+operations
+a)creation
+b)insertion
+c)selection
+d)updation
+e)deletion
+using sqlite3
+
+PROGRAM NO: 39
+AIM: Static page creation
+
+
+PROGRAM NO: 40
+AIM: Dynamic page creation
+
+
+
+Program NO:41
+AIM:Write a Pandas program to create and display a DataFrame from
+
+PROGRAM NO:42
+AIM:Using numpy do the following operations
+a) Create a 2-D array with the following elements
+
+
+PROGRAM NO:43
+AIM: Using matplotlib visualize the data
+

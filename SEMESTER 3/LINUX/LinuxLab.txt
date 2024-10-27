@@ -1,0 +1,244 @@
+1.		
+	mkdir -p library/technical/electronics
+	mkdir -p library/technical/mechanical
+	mkdir -p library/technical/computerScience
+	mkdir -p library/nonTechnical/fiction
+	mkdir -p library/nonTechnical/nonFiction/history
+	mkdir -p library/nonTechnical/nonFiction/biographies
+
+	a.	cd library
+		cd nonTechnical
+		cd nonFiction
+		cd history
+		cat > benjaminFranklin.txt
+		Benjamin Franklin was one of the Founding Fathers of the United States.
+		He was a renowned polymath and made significant contributions in fields such as science, politics, and diplomacy.
+		Franklin is also known for his experiments with electricity and his role in drafting the Declaration of Independence.
+
+	b.	cd ..
+		cd ..
+		cd ..
+		cd technical
+		cd computerScience
+		cat > labrules
+		1. Follow all safety guidelines in the lab.
+		2. No food or drinks allowed in the lab.
+		3. Handle all equipment with care.
+		4. Maintain cleanliness in the lab.
+		5. Report any issues with equipment immediately.
+		cp labrules ../electronics/
+		cp labrules ../mechanical/
+		ls ../electronics/
+		labrules
+		ls ../mechanical/
+		labrules
+
+	c.	cat > armstrong.c
+		#this is a c program
+		cat > average.c
+		#this is a c program
+		mkdir lab
+		cp *.c lab
+		ls lab
+		armstrong.c  average.c
+
+
+2.	
+	i.	
+		uname
+		GNU/Linux
+		whoami
+		jainroyp
+		hostname
+		JainRoyP
+	
+	ii.
+		who
+		jainroyp pts/1        2024-08-15 10:38
+		who | grep jainroyp
+		jainroyp pts/1        2024-08-15 10:38
+
+	iii.
+		a.
+			cal 1 2000
+				January 2000
+			Su Mo Tu We Th Fr Sa
+							1
+			2  3  4  5  6  7  8
+			9 10 11 12 13 14 15
+			16 17 18 19 20 21 22
+			23 24 25 26 27 28 29
+			30 31
+		b.
+			cal 2 1999
+				February 1999
+			Su Mo Tu We Th Fr Sa
+				1  2  3  4  5  6
+			7  8  9 10 11 12 13
+			14 15 16 17 18 19 20
+			21 22 23 24 25 26 27
+			28
+		c.
+			cal 9 $(date +%Y)
+				September 24
+			Su Mo Tu We Th Fr Sa
+							1  2
+			3  4  5  6  7  8  9
+			10 11 12 13 14 15 16
+			17 18 19 20 21 22 23
+			24 25 26 27 28 29 30
+		d.
+			cal 9 7
+				September 7
+			Su Mo Tu We Th Fr Sa
+						1  2  3
+			4  5  6  7  8  9 10
+			11 12 13 14 15 16 17
+			18 19 20 21 22 23 24
+			25 26 27 28 29 30
+		e.
+			cal
+				August 2024
+			Su Mo Tu We Th Fr Sa
+						1  2  3
+			4  5  6  7  8  9 10
+			11 12 13 14 15 16 17
+			18 19 20 21 22 23 24
+			25 26 27 28 29 30 31
+		f.
+			date +"%d %a %b %Y"
+			16 Fri Aug 2024
+
+	iv.	
+		date +"%I:%M %p"
+		1:18 PM
+		
+		date +"%H:%M"
+		13:18
+
+	v.
+		date +"%d-%m-%Y %H:%M:%S"
+		15-08-2024 12:22:04
+
+	vi.
+		date +"%I:%M:%S (%p)"
+		12:24:31 (PM)
+
+	vii.
+		date +"%a"
+		Thu
+
+
+4.
+	i.
+		cat > timefile
+		This is the first line of time.
+		Here is another line without it.
+		Time is precious.
+		Do not waste time.
+		grep time timefile
+		This is the first line of time.
+		Do not waste time.
+	ii.
+		grep time timefile
+		This is the first line of time.
+		Do not waste time.	
+	iii.	
+		grep -v time timefile
+		Here is another line without it.
+		Time is precious.
+
+		grep -vi time timefile
+		Here is another line without it.
+	iv.
+		grep -v time timefile | wc -l
+		2
+		
+		grep -vi time timefile | wc -l
+		1
+	
+	Other examples:
+		grep t.*e timefile
+		time flies
+		time stops for no one
+		time is the most valuable gift we can give to someone
+		rolling stone gather no moves
+		barking dogs seldom bite
+
+		grep t.*ime timefile
+		time flies
+		time stops for no one
+
+		grep t[ao]me timefile
+		he tames wild animals
+		his name is tome
+
+		grep t[aoi]me timefile | grep -v time
+		he tames wild animals
+		his name is tome
+
+		Renaming:
+		mv old_filename new_filename
+
+
+5.
+	i.
+		cat > marklist
+		Name    ENG     HIN     SCI     EVS     MAT
+		ALICE   85      78      92      88      90
+		BOB     75      80      85      82      87
+		CHARLIE 90      85      88      91      93
+	ii.
+		(head -1 marklist && tail -2 marklist) | column -t
+		Name     ENG  HIN  SCI  EVS  MAT
+		BOB      75   80   85   82   87
+		CHARLIE  90   85   88   91   93
+	iii.
+		awk 'NR == 1 || NR == 4' marklist
+		Name    ENG     HIN     SCI     EVS     MAT
+		CHARLIE 90      85      88      91      93
+	iv.
+		(awk 'NR == 1 || NR > 1 {print $1, $2}' marklist) | column -t
+		Name     ENG
+		ALICE    85
+		BOB      75
+		CHARLIE  90
+	v.
+		(awk 'NR == 1 || NR > 1 {print $1, $2, $6}' marklist) | column -t
+		Name     ENG  MAT
+		ALICE    85   90
+		BOB      75   87
+		CHARLIE  90   93
+
+	(Note: column -t is for formated output)
+
+
+7.
+	i.
+		cat > sample
+		Ram
+		John
+		Ram
+		Alice
+		Bob
+		Ram
+		Charlie
+	ii.
+		grep -i ram sample
+		Ram
+		Ram
+		Ram
+	iii.
+		sort sample
+		Alice
+		Bob
+		Charlie
+		John
+		Ram
+		Ram
+		Ram
+	iv.
+		sort sample | uniq -d
+		Ram
+	v.
+		sort -r sample > desc

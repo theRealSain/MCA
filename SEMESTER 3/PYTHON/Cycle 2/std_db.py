@@ -1,13 +1,10 @@
 import sqlite3
 
-# Step 1: Connect to the database (creates if it doesn't exist)
 conn = sqlite3.connect('student.db')
-
-# Step 2: Create a cursor object to interact with the database
 cursor = conn.cursor()
 
-# Step 3: Create a table named 'students'
-def create_table():
+# Function to create the students table
+def create():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS students (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,51 +13,64 @@ def create_table():
             grade TEXT NOT NULL
         )
     ''')
-    print("Table created successfully.")
+    print("Table created!")
 
-# Step 4: Insert records into the students table
-def insert_records():
-    students = [
-        ('Alice', 20, 'A'),
-        ('Bob', 22, 'B'),
-        ('Charlie', 21, 'C')
-    ]
-    cursor.executemany('INSERT INTO students (name, age, grade) VALUES (?, ?, ?)', students)
-    conn.commit()  # Commit the changes
-    print("Records inserted successfully.")
+# Function to insert a new record into the students table
+def insert():
+    name = input("Enter name: ")
+    age = int(input("Enter age: "))  # Convert input to integer
+    grade = input("Enter grade: ")
 
-# Step 5: Select and display records from the students table
-def select_records():
+    cursor.execute('INSERT INTO students (name, age, grade) VALUES (?, ?, ?)', (name, age, grade))
+    conn.commit()
+    print("Record inserted successfully!")
+
+# Function to select all records from the students table
+def select():
     cursor.execute('SELECT * FROM students')
     rows = cursor.fetchall()
-    print("Records in the students table:")
+    print("Records:")
     for row in rows:
         print(row)
 
-# Step 6: Update a record in the students table
-def update_record(student_id, new_name):
-    cursor.execute('UPDATE students SET name = ? WHERE id = ?', (new_name, student_id))
-    conn.commit()  # Commit the changes
-    print(f"Record with ID {student_id} updated successfully.")
+# Function to update a student's name by ID
+def update():
+    id = int(input("Enter student ID to update: "))  # Get student ID
+    name = input("Enter new name: ")  # Get new name
 
-# Step 7: Delete a record from the students table
-def delete_record(student_id):
-    cursor.execute('DELETE FROM students WHERE id = ?', (student_id,))
-    conn.commit()  # Commit the changes
-    print(f"Record with ID {student_id} deleted successfully.")
+    cursor.execute('UPDATE students SET name = ? WHERE id = ?', (name, id))
+    conn.commit()
+    print(f"Record with ID {id} updated!")
 
-# Step 8: Execute all operations
-create_table()
-insert_records()
-select_records()
+# Function to delete a student record by ID
+def delete():
+    id = int(input("Enter student ID to delete: "))  # Get student ID
 
-# Update record: changing Bob's name to Robert (assuming Bob has ID 2)
-update_record(2, 'Robert')
-select_records()
+    cursor.execute('DELETE FROM students WHERE id = ?', (id,))
+    conn.commit()
+    print(f"Record with ID {id} deleted!")
 
-# Delete record: deleting Alice (assuming Alice has ID 1)
-delete_record(1)
-select_records()
+# Create the table if it doesn't exist
+create()
 
-# Step 9: Close the database connection
+# Endless loop to keep the program running
+while True:
+    print("\n1. Insert\n2. Update\n3. Delete\n4. Display\n5. Exit")
+    ch = int(input("Enter choice: "))  # Get choice and convert to integer
+
+    if ch == 1:
+        insert()
+    elif ch == 2:
+        update()
+    elif ch == 3:
+        delete()
+    elif ch == 4:
+        select()
+    elif ch == 5:
+        print("Exiting the program...")
+        break  # Exit the loop and the program
+    else:
+        print("Invalid choice! Please try again.")
+
+# Close the connection when done
 conn.close()

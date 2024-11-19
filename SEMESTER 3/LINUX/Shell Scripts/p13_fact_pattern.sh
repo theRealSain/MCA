@@ -1,5 +1,3 @@
-#!/bin/sh
-
 echo "Enter the number:"
 read n
 

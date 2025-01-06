@@ -1,14 +1,17 @@
-# Step 1: Read input string from the user
-input_string = input("Enter a string: ")
+def is_palindrome(s):
+    # Remove spaces and convert to lowercase for uniformity
+    s = s.replace(" ", "").lower()
+    length = len(s)
 
-# Step 2: Convert the string to lowercase to make the check case-insensitive
-normalized_string = input_string.lower()
+    # Compare characters from the start and end
+    for i in range(length // 2):
+        if s[i] != s[length - i - 1]:
+            return False
+    return True
 
-# Step 3: Reverse the normalized string
-reversed_string = normalized_string[::-1]
-
-# Step 4: Check if the original normalized string is equal to the reversed string
-if normalized_string == reversed_string:
-    print(f"The string '{input_string}' is a palindrome.")
+# Test the function
+test_string = "radar"
+if is_palindrome(test_string):
+    print(f'"{test_string}" is a palindrome.')
 else:
-    print(f"The string '{input_string}' is not a palindrome.")
+    print(f'"{test_string}" is not a palindrome.')
